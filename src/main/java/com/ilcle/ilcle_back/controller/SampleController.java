@@ -42,6 +42,7 @@ public class SampleController {
         return "hi";
     }
 
+
     @Operation(summary = "delete test api summary", description = "delete test api")
     @DeleteMapping("/delete")
     public String deleteTest4() {
