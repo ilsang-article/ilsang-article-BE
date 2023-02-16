@@ -29,3 +29,7 @@ server:
       charset: utf-8
       enabled: true
       force: true
+
+jwt:
+  secret:
+    key: ${JWT_SECRET_KEY}

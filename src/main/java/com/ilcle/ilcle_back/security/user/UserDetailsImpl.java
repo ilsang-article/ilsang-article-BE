@@ -1,6 +1,6 @@
 package com.ilcle.ilcle_back.security.user;
 
-import com.example.sherlockescape.domain.Member;
+import com.ilcle.ilcle_back.entity.Member;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
