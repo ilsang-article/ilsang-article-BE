@@ -1,12 +1,11 @@
 package com.ilcle.ilcle_back.utils;
 
-
-import com.example.sherlockescape.domain.Member;
-import com.example.sherlockescape.dto.request.MemberRequestDto;
-import com.example.sherlockescape.exception.ErrorCode;
-import com.example.sherlockescape.exception.GlobalException;
-import com.example.sherlockescape.repository.MemberRepository;
-import com.example.sherlockescape.repository.RefreshTokenRepository;
+import com.ilcle.ilcle_back.dto.request.MemberRequestDto;
+import com.ilcle.ilcle_back.entity.Member;
+import com.ilcle.ilcle_back.exception.ErrorCode;
+import com.ilcle.ilcle_back.exception.GlobalException;
+import com.ilcle.ilcle_back.repository.MemberRepository;
+import com.ilcle.ilcle_back.repository.RefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -46,11 +45,5 @@ public class ValidateCheck {
         }
     }
 
-    //닉네임 중복 체크
-    public void userNicknameDuplicateCheck(String nickname){
-        if(memberRepository.findByNickname(nickname).isPresent()){
-            throw new GlobalException(ErrorCode.DUPLICATE_MEMBER_NICKNAME);
-        }
-    }
 
 }
