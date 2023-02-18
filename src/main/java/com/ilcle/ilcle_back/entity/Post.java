@@ -27,7 +27,7 @@ public class Post extends BaseTimeEntity {
 	private String url;
 
 	@Column
-	private String ImageUrl;
+	private String imageUrl;
 
 	@Column
 	private String writeDate;
