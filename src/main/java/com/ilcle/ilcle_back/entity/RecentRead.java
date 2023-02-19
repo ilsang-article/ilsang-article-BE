@@ -25,6 +25,11 @@ public class RecentRead {
 	@JoinColumn(name = "post_id")
 	private Post post;
 
+	//찜한글 중 읽었는지 체크
 	@Column
-	private Boolean readCheck;
+	private boolean readCheck;
+
+	//전체 글 중 읽었는지 여부
+	@Column
+	private boolean read;
 }
