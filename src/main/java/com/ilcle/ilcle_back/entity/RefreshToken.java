@@ -1,6 +1,7 @@
 package com.ilcle.ilcle_back.entity;
 
 import jakarta.persistence.*;
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

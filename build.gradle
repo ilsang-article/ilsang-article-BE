@@ -1,16 +1,7 @@
-//queryDsl version 정보 추가
-buildscript {
-	ext {
-		queryDslVersion = "5.0.0"
-	}
-}
-
 plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.0.2'
 	id 'io.spring.dependency-management' version '1.1.0'
-	//querydsl plugins 추가
-	id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
 }
 
 group = 'com.ilcle'
@@ -39,17 +30,11 @@ dependencies {
 	testImplementation 'org.springframework.security:spring-security-test'
 
 	// querydsl
-//	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
-//	implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
-	// == 스프링 부트 3.0 이상 ==
+	implementation 'com.querydsl:querydsl-core'
 	implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
 	annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jakarta"
-
-//	implementation("com.querydsl:querydsl-core:${queryDslVersion}")
-//	implementation("com.querydsl:querydsl-jpa:${queryDslVersion}:jakarta")
-//	annotationProcessor(
-//			"com.querydsl:querydsl-apt:${queryDslVersion}:jakarta",
-//			"jakarta.persistence:jakarta.persistence-api:3.1.0")
+	annotationProcessor "jakarta.annotation:jakarta.annotation-api"
+	annotationProcessor "jakarta.persistence:jakarta.persistence-api"
 
 	//mysql
 	implementation 'mysql:mysql-connector-java'
@@ -62,42 +47,6 @@ dependencies {
 	//스웨거
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
 	implementation 'org.springdoc:springdoc-openapi-starter-common'
-}
-
-
-tasks.named('test') {
-	useJUnitPlatform()
-}
-
-
-/*
-* queryDSL 설정 추가
-*/
-// querydsl에서 사용할 경로 설정
-def querydslDir = "$buildDir/generated/querydsl"
-// JPA 사용 여부와 사용할 경로를 설정
-querydsl {
-	library = "com.querydsl:querydsl-apt"
-	jpa = true
-	querydslSourcesDir = querydslDir
-}
-// build 시 사용할 sourceSet 추가
-sourceSets {
-	main.java.srcDir querydslDir
-}
-// querydsl 컴파일시 사용할 옵션 설정
-compileQuerydsl {
-	options.annotationProcessorPath = configurations.querydsl
-}
-// querydsl 이 compileClassPath 를 상속하도록 설정
-configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
-	querydsl.extendsFrom compileClasspath
-}
-jar {
-	enabled = false
 }
 
 tasks.named('test') {
