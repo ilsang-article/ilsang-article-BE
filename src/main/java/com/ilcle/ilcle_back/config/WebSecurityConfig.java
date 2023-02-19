@@ -60,31 +60,7 @@ public class WebSecurityConfig {
 
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-        http.authorizeRequests()
-                //MemberController
-                .requestMatchers(HttpMethod.POST,"/signup").permitAll()
-                .requestMatchers(HttpMethod.POST,"/login").permitAll()
-                .requestMatchers(HttpMethod.PUT, "/nickname").authenticated()
-
-                //BadgeController
-                .requestMatchers(HttpMethod.POST, "/badge/give").authenticated()
-
-                //MemberBadgeController
-                .requestMatchers(HttpMethod.PUT, "/badge/{badgeId}").authenticated()
-                .requestMatchers(HttpMethod.GET, "/main/achieve").authenticated()
-
-                //MyPageController
-                .requestMatchers(HttpMethod.GET, "/myreviews").authenticated()
-                .requestMatchers(HttpMethod.GET, "/mythemes").authenticated()
-                .requestMatchers(HttpMethod.GET, "/mycompanies").authenticated()
-                .requestMatchers(HttpMethod.POST, "/tendency").authenticated()
-                .requestMatchers(HttpMethod.PUT, "/tendency").authenticated()
-                .requestMatchers(HttpMethod.GET, "/mypage").authenticated()
-
-                //ReviewController
-                .requestMatchers(HttpMethod.POST, "/theme/{themeId}/review").authenticated()
-                .requestMatchers(HttpMethod.PUT, "/theme/review/{reviewId}").authenticated()
-                .requestMatchers(HttpMethod.DELETE, "/theme/review/{reviewId}").authenticated()
+        http.authorizeHttpRequests()
                 .anyRequest().permitAll()
                 .and().addFilterBefore(new JwtAuthFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
 
