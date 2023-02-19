@@ -236,3 +236,6 @@ gradle-app.setting
 ### Gradle Patch ###
 # Java heap dump
 *.hprof
+
+### Querydsl
+/src/main/generated
