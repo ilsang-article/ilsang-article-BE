@@ -2,8 +2,10 @@ package com.ilcle.ilcle_back.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import java.time.LocalDateTime;
 
 import static jakarta.persistence.FetchType.LAZY;
 
@@ -11,7 +13,8 @@ import static jakarta.persistence.FetchType.LAZY;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class RecentRead {
+@Builder
+public class RecentRead extends BaseTimeEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,5 +29,16 @@ public class RecentRead {
 	private Post post;
 
 	@Column
-	private Boolean readCheck;
+	private LocalDateTime readCheckTime;
+
+	public RecentRead(Member member, Post post) {
+		this.member = member;
+		this.post = post;
+		this.readCheckTime = LocalDateTime.now();
+	}
+
+	public void updateReadCheckTime() {
+		this.readCheckTime = LocalDateTime.now();
+	}
 }
+

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.ui.context.Theme;
 
 import static jakarta.persistence.FetchType.LAZY;
 
@@ -31,5 +32,9 @@ public class PostLike {
 	public PostLike(Member member, Post post) {
 		this.member = member;
 		this.post = post;
+	}
+
+	public void updateLikeReadCheck(boolean likeReadCheck) {
+		this.likeReadCheck = likeReadCheck;
 	}
 }
