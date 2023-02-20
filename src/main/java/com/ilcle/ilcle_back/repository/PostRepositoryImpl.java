@@ -19,7 +19,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
 
 	// 전체글 조회(최신순)
 	@Override
-	public Page<PostResponseDto> getAll(Pageable pageable) {
+	public Page<PostResponseDto> getAllPosts(Pageable pageable) {
 		List<PostResponseDto> result = jpaQueryFactory.from(post)
 				.select(Projections.constructor(PostResponseDto.class,
 						post.id,
@@ -32,6 +32,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
 				))
 				.limit(pageable.getPageSize())
 				.offset(pageable.getOffset())
+				.orderBy(post.writeDate.desc())
 				.fetch();
 
 		return new PageImpl<>(result, pageable, result.size());

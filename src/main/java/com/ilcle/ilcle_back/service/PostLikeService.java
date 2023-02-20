@@ -11,12 +11,14 @@ import com.ilcle.ilcle_back.exception.GlobalException;
 import com.ilcle.ilcle_back.repository.PostLikeRepository;
 import com.ilcle.ilcle_back.repository.PostRepository;
 import com.ilcle.ilcle_back.utils.ValidateCheck;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.context.Theme;
 
 import java.util.Optional;
+
+import static com.ilcle.ilcle_back.exception.ErrorCode.MEMBER_NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
@@ -26,9 +28,19 @@ public class PostLikeService {
 	private final PostRepository postRepository;
 	private final ValidateCheck validateCheck;
 
+	// 게시글 찜하기
 	@Transactional
-	public ResponseDto<PostLikeResponseDto> postLikeUp(Long postId, String username){
+	public ResponseDto<PostLikeResponseDto> postLikeUp(Long postId, String username, HttpServletRequest request){
 
+		/* 예외처리 */
+		if(null == request.getHeader("Refresh-Token")){
+			throw new GlobalException(MEMBER_NOT_FOUND);
+		}
+		if(null == request.getHeader("Authorization")){
+			throw new GlobalException(MEMBER_NOT_FOUND);
+		}
+
+		// 게시글 찜하기
 		Optional<PostLike> likes = postLikeRepository
 				.findByPostIdAndMemberUsername(postId, username);
 
