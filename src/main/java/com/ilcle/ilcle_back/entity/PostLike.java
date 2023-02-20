@@ -11,7 +11,7 @@ import static jakarta.persistence.FetchType.LAZY;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Like {
+public class PostLike {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,5 +26,10 @@ public class Like {
 	private Post post;
 
 	@Column
-	private Boolean likeReadCheck;
+	private boolean likeReadCheck;
+
+	public PostLike(Member member, Post post) {
+		this.member = member;
+		this.post = post;
+	}
 }

@@ -17,6 +17,7 @@ public enum ErrorCode {
 	NEED_TO_LOGIN(HttpStatus.FORBIDDEN.value(), "You Need To LogIn", "로그인이 필요합니다."),
 
 	/*Not Found 404 error*/
+	POST_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Post not Found", "기사가 존재하지 않습니다."),
 
 
 	/* CONFLICT 409 error*/

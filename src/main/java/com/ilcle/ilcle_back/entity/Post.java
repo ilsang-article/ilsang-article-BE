@@ -1,10 +1,7 @@
 package com.ilcle.ilcle_back.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Builder
 @Getter
@@ -34,4 +31,15 @@ public class Post extends BaseTimeEntity {
 
 	@Column
 	private String writer;
+
+	@Column
+	private boolean postLikeCheck;
+
+	public Post(Long postId) {
+		this.id = postId;
+	}
+
+	public void updatePostLikeCheck(boolean postLikeCheck) {
+		this.postLikeCheck = postLikeCheck;
+	}
 }
