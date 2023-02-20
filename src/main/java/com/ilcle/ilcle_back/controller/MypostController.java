@@ -43,9 +43,8 @@ public class MypostController {
     // 찜한글 목록(최신순)
     @GetMapping("/myposts")
     public ResponseDto<Page<MyPostResponseDto>> getAllMyPosts(@AuthenticationPrincipal UserDetails userDetails,
-                                                              @PageableDefault(page = 10, sort = "writeDate", direction = Sort.Direction.DESC) Pageable pageable,
-                                                              HttpServletRequest request) {
-        Page<MyPostResponseDto> myPostResponseDtoList = mypostService.getAllMyPosts(userDetails.getUsername(), pageable, request);
+                                                              @PageableDefault(page = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+        Page<MyPostResponseDto> myPostResponseDtoList = mypostService.getAllMyPosts(userDetails.getUsername(), pageable);
         return ResponseDto.success(myPostResponseDtoList);
     }
 }

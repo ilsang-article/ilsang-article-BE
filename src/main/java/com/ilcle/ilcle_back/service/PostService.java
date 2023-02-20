@@ -18,8 +18,7 @@ public class PostService {
 
 	private final PostRepository postRepository;
 	public Page<PostResponseDto> getAllPosts(Pageable pageable) {
-		return postRepository.getAllPosts(pageable); // Spring Data JPA의 findAll() 메소드:  모든 엔티티를 조회. 페이징, 정렬
+		return postRepository.getAllPosts(pageable);
+
 	}
-
-
 }

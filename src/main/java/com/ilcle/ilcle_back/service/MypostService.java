@@ -57,15 +57,7 @@ public class MypostService {
     }
 
     // 찜한글 목록(최신순)
-	public Page<MyPostResponseDto> getAllMyPosts(String username, Pageable pageable, HttpServletRequest request) {
-
-        /* 예외처리 */
-        if(null == request.getHeader("Refresh-Token")){
-			throw new GlobalException(MEMBER_NOT_FOUND);
-        }
-        if(null == request.getHeader("Authorization")){
-            throw new GlobalException(MEMBER_NOT_FOUND);
-        }
+	public Page<MyPostResponseDto> getAllMyPosts(String username, Pageable pageable) {
 
         // 사용자가 있는지 확인
         Member member = validateCheck.getMember(username);

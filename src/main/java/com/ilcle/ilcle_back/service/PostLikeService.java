@@ -30,15 +30,7 @@ public class PostLikeService {
 
 	// 게시글 찜하기
 	@Transactional
-	public ResponseDto<PostLikeResponseDto> postLikeUp(Long postId, String username, HttpServletRequest request){
-
-		/* 예외처리 */
-		if(null == request.getHeader("Refresh-Token")){
-			throw new GlobalException(MEMBER_NOT_FOUND);
-		}
-		if(null == request.getHeader("Authorization")){
-			throw new GlobalException(MEMBER_NOT_FOUND);
-		}
+	public ResponseDto<PostLikeResponseDto> postLikeUp(Long postId, String username){
 
 		// 게시글 찜하기
 		Optional<PostLike> likes = postLikeRepository
