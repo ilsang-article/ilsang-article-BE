@@ -16,8 +16,8 @@ public class RecentReadController {
     private final RecentReadService recentReadService;
 
     //글 클릭시 읽은 글로 저장
-    @PostMapping("/post/{postId}/readCheck")
-    public ResponseDto<?> saveReadCheck(@AuthenticationPrincipal UserDetails userDetails,
+    @PostMapping("/post/{postId}/read")
+    public ResponseDto<String> saveReadCheck(@AuthenticationPrincipal UserDetails userDetails,
                                        @PathVariable Long postId) {
         return ResponseDto.success(recentReadService.saveReadCheck(userDetails.getUsername(), postId));
     }

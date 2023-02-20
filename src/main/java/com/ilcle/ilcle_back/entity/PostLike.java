@@ -26,5 +26,9 @@ public class PostLike {
 	private Post post;
 
 	@Column
-	private Boolean likeReadCheck;
+	private boolean likeReadCheck;
+
+	public void updateLikeReadCheck(boolean likeReadCheck) {
+		this.likeReadCheck = likeReadCheck;
+	}
 }
