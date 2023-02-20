@@ -103,7 +103,6 @@ public class MemberService {
         return "로그아웃 완료";
     }
 
-
     //아이디 중복 확인
     @Transactional(readOnly = true) //읽기 전용 쿼리의 성능 최적화
     public ResponseEntity<ResponseDto<String>> usernameDuplicateCheck(String username) {

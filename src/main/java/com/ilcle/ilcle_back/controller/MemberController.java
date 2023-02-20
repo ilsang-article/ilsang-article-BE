@@ -12,16 +12,12 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.nio.charset.StandardCharsets;
 
 @Tag(name = "멤버 컨트롤러")
 @RequiredArgsConstructor
@@ -49,7 +45,7 @@ public class MemberController {
 		return memberService.login(loginRequestDto, httpServletResponse);
 	}
 
-//	//로그아웃
+	//로그아웃
 //	@PostMapping("/api/logout")
 //	public HttpHeaders setHeaders() {
 //		HttpHeaders headers = new HttpHeaders();
@@ -57,10 +53,11 @@ public class MemberController {
 //		return headers;
 //	}
 
-	//로그아웃
+//로그아웃
 	@PostMapping("/api/logout")
 	public ResponseDto<String> logout(@AuthenticationPrincipal UserDetails userDetails)
 	{
 		return ResponseDto.success(memberService.logout(userDetails.getUsername()));
-	}
+    }
+
 }

@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.ui.context.Theme;
 
 import static jakarta.persistence.FetchType.LAZY;
 
@@ -12,7 +11,7 @@ import static jakarta.persistence.FetchType.LAZY;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Like {
+public class PostLike {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,5 +26,9 @@ public class Like {
 	private Post post;
 
 	@Column
-	private Boolean likeReadCheck;
+	private boolean likeReadCheck;
+
+	public void updateLikeReadCheck(boolean likeReadCheck) {
+		this.likeReadCheck = likeReadCheck;
+	}
 }
