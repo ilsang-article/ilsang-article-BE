@@ -97,11 +97,11 @@ public class MemberService {
     }
 
     //로그아웃
-    public String logout(Member member) {
-        refreshTokenRepository.deleteByMemberUsername(member.getUsername());
+    @Transactional
+    public String logout(String username) {
+        refreshTokenRepository.deleteByMemberUsername(username);
         return "로그아웃 완료";
     }
-
 
     //아이디 중복 확인
     @Transactional(readOnly = true) //읽기 전용 쿼리의 성능 최적화
