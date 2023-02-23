@@ -64,7 +64,7 @@ public class MypostService {
         // 사용자가 있는지 확인
         Member member = validateCheck.getMember(username);
         // 찜한글 목록
-        Page<Post> FilteredMyPostList = postLikeRepository.findFilterByMember(member, pageable, read);
+        Page<Post> FilteredMyPostList = postRepository.findFilterByMember(member, pageable, read);
         List<MyPostResponseDto> myPostsResponseDtoList = new ArrayList<>();
 
         for(Post post : FilteredMyPostList) {
