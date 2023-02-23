@@ -113,6 +113,7 @@ public class MypostService {
                             .imageUrl(post.getImageUrl())
                             .writeDate(post.getWriteDate())
                             .postLikeCheck(post.isPostLikeCheck())
+                            .likeReadCheck(post.isLikeReadCheck())
                             .writer(post.getWriter())
                             .build();
             myPostsResponseDtoList.add(myPostResponseDto);

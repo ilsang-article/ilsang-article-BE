@@ -52,7 +52,7 @@ public class PostLikeRepositoryImpl {
 		if (read == null) {
 			return null;
 		}
-		return postLike.likeReadCheck.eq(read);
+		return post.likeReadCheck.eq(read);
     }
 
 }
