@@ -1,7 +1,6 @@
 package com.ilcle.ilcle_back.service;
 
 import com.ilcle.ilcle_back.dto.ResponseDto;
-import com.ilcle.ilcle_back.dto.request.PostLikeRequestDto;
 import com.ilcle.ilcle_back.dto.response.PostLikeResponseDto;
 import com.ilcle.ilcle_back.entity.PostLike;
 import com.ilcle.ilcle_back.entity.Member;
@@ -11,14 +10,11 @@ import com.ilcle.ilcle_back.exception.GlobalException;
 import com.ilcle.ilcle_back.repository.PostLikeRepository;
 import com.ilcle.ilcle_back.repository.PostRepository;
 import com.ilcle.ilcle_back.utils.ValidateCheck;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
-
-import static com.ilcle.ilcle_back.exception.ErrorCode.MEMBER_NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
@@ -43,21 +39,21 @@ public class PostLikeService {
 				() -> new GlobalException(ErrorCode.POST_NOT_FOUND)
 		);
 
-		boolean postLikeCheck;
+		boolean likeCheck;
 		if (likes.isPresent()) {
-			postLikeCheck = false;
+			likeCheck = false;
 			postLikeRepository.delete(likes.get());
-			updatePost.updatePostLikeCheck(false);
+			updatePost.updateLikeCheck(false);
 		} else {
-			postLikeCheck = true;
+			likeCheck = true;
 			PostLike postLike = new PostLike(member, post);
 			postLikeRepository.save(postLike);
-			updatePost.updatePostLikeCheck(true);
+			updatePost.updateLikeCheck(true);
 		}
 
 		return ResponseDto.success(
 				PostLikeResponseDto.builder()
-						.postLikeCheck(postLikeCheck)
+						.likeCheck(likeCheck)
 						.build()
 		);
 	}

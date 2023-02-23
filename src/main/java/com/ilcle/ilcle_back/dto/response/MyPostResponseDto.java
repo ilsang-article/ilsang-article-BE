@@ -18,7 +18,7 @@ public class MyPostResponseDto {
 	private String imageUrl;
 	private String writeDate;
 	private String writer;
-	private boolean postLikeCheck;
+	private boolean likeCheck;
 	private boolean likeReadCheck;
 
 

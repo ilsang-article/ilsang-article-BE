@@ -11,5 +11,5 @@ import lombok.NoArgsConstructor;
 @Builder
 public class PostLikeResponseDto {
 
-	private boolean postLikeCheck;
+	private boolean likeCheck;
 }

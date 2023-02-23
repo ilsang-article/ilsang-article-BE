@@ -20,7 +20,4 @@ public interface PostLikeRepository extends JpaRepository<PostLike, Long> , Post
 
 	PostLike findByMemberAndPostId(Member member, Long postId);
 
-	Page<PostLike> findPostLikesByMember(Member member, Pageable pageable);
-
-
 }

@@ -58,42 +58,7 @@ public class MypostService {
         return "찜한글 읽음 취소";
     }
 
-    // 찜한글 목록(최신순)
-	public Page<MyPostResponseDto> getAllMyPosts(String username, Pageable pageable) {
-
-        // 사용자가 있는지 확인
-        Member member = validateCheck.getMember(username);
-        // 찜한글 목록(최신순)
-        Page<PostLike> myPostList = postLikeRepository.findPostLikesByMember(member, pageable);
-        List<MyPostResponseDto> myPostsResponseDtoList = new ArrayList<>();
-
-        for(PostLike postLike : myPostList) {
-
-            Post post = postRepository.findById(postLike.getPost().getId())
-                    .orElseThrow(
-                            () -> new GlobalException(ErrorCode.POSTLIKE_NOT_FOUND)
-                    );
-
-            MyPostResponseDto myPostResponseDto =
-                    MyPostResponseDto.builder()
-                                     .id(post.getId())
-                                     .title(post.getTitle())
-                                     .contents(post.getContents())
-                                     .url(post.getUrl())
-                                     .imageUrl(post.getImageUrl())
-                                     .writeDate(post.getWriteDate())
-                                     .postLikeCheck(post.isPostLikeCheck())
-                                     .writer(post.getWriter())
-                                     .build();
-            myPostsResponseDtoList.add(myPostResponseDto);
-        }
-        Page<MyPostResponseDto> myPostResponseDtoLists =
-                new PageImpl<>(myPostsResponseDtoList, pageable, myPostList.getTotalElements());
-
-        return myPostResponseDtoLists;
-    }
-
-    // 찜한글 필터링
+    // 찜한글 조회(기본: 최신순, 필터링: 읽은순/안 읽은순)
     public Page<MyPostResponseDto> filter(String username, Pageable pageable, Boolean read) {
 
         // 사용자가 있는지 확인
@@ -112,7 +77,7 @@ public class MypostService {
                             .url(post.getUrl())
                             .imageUrl(post.getImageUrl())
                             .writeDate(post.getWriteDate())
-                            .postLikeCheck(post.isPostLikeCheck())
+                            .likeCheck(post.isLikeCheck())
                             .likeReadCheck(post.isLikeReadCheck())
                             .writer(post.getWriter())
                             .build();
