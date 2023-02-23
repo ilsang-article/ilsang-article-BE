@@ -37,7 +37,7 @@ public class MypostController {
     // 찜한글 필터링(읽은글/안 읽은글)
     @GetMapping("/myposts")
     public ResponseDto<Page<MyPostResponseDto>> myPostFilter(@AuthenticationPrincipal UserDetails userDetails,
-                                                             @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
+                                                             @PageableDefault(size = 10, sort = "writeDate", direction = Sort.Direction.DESC) Pageable pageable,
                                                              @RequestParam(value = "read", required = false) Boolean read) {
         Page<MyPostResponseDto> filteredMyPostList = mypostService.filter(userDetails.getUsername(), pageable, read);
         return ResponseDto.success(filteredMyPostList);
