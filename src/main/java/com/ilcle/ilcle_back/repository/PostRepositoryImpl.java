@@ -42,8 +42,11 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
 				.orderBy(post.writeDate.desc())
 				.fetch();
 
-		return new PageImpl<>(result, pageable, result.size());
-	}
+			long totalSize = jpaQueryFactory
+					.selectFrom(post)
+					.fetch().size();
+
+		return new PageImpl<>(result, pageable, totalSize);	}
 
 	// 찜한글 조회(기본: 최신순, 필터링: 읽은순/안 읽은순)
 	public Page<Post> findFilterByMember(Member member, Pageable pageable, Boolean read) {
