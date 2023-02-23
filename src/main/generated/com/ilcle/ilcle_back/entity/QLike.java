@@ -11,7 +11,7 @@ import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
- * QLike is a Querydsl query type for Like
+ * QLike is a Querydsl query type for PostLike
  */
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
 public class QLike extends EntityPathBase<Like> {

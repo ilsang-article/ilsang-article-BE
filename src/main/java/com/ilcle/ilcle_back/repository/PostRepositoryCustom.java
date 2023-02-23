@@ -7,5 +7,5 @@ import org.springframework.data.domain.Pageable;
 public interface PostRepositoryCustom {
 
 	// 전체글 조회(최신순)
-	Page<PostResponseDto> getAll(Pageable pageable);
+	Page<PostResponseDto> getAllPosts(Pageable pageable);
 }

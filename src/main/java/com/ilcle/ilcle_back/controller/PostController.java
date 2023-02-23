@@ -21,7 +21,8 @@ public class PostController {
 
 	// 전체글 조회(최신순)
 	@GetMapping("/posts")
-	public ResponseDto<Page<PostResponseDto>> getAllposts(Pageable pageable) {
+	public ResponseDto<Page<PostResponseDto>> getAllposts(
+			@PageableDefault(page = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
 		return ResponseDto.success(postServiece.getAllPosts(pageable));
 	}
 

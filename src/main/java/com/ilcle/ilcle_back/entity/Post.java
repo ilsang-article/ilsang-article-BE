@@ -36,9 +36,19 @@ public class Post extends BaseTimeEntity {
 	private String writer;
 
 	@Column
+	private boolean postLikeCheck;
+
+	@Column
 	private boolean likeReadCheck;
 
-	public void updateLikeReadCheck(boolean likeReadCheck) {
-		this.likeReadCheck = likeReadCheck;
+	public Post(Long postId) {
+		this.id = postId;
+	}
+
+	public void updatePostLikeCheck(boolean postLikeCheck) {
+		this.postLikeCheck = postLikeCheck;
+	}
+	public void updateLikeReadCheck ( boolean likeReadCheck){
+			this.likeReadCheck = likeReadCheck;
 	}
 }
