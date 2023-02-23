@@ -61,6 +61,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
 				.limit(pageable.getPageSize())
 				.offset(pageable.getOffset())
 				.orderBy(sort(pageable), post.writeDate.desc())
+//				.orderBy(post.writeDate.desc())
 				.fetch();
 
 		long totalSize = jpaQueryFactory
@@ -85,10 +86,9 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
 	private OrderSpecifier<?> sort(Pageable pageable) {
 		if (!pageable.getSort().isEmpty()) {
 			for (Sort.Order order : pageable.getSort()) {
-				switch (order.getProperty()) {
-					case "read":
-						return new OrderSpecifier<>(Order.DESC, post.likeReadCheck);
-					case "unread":
+				if (order.getProperty().equals("read")) {
+					return new OrderSpecifier<>(Order.DESC, post.likeReadCheck);
+				}else{
 						return new OrderSpecifier<>(Order.ASC, post.likeReadCheck);
 				}
 			}
