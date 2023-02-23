@@ -22,7 +22,7 @@ public class MypostService {
         Member member = validateCheck.getMember(username);
         //해당 찜한글 조회
         PostLike postLike = postLikeRepository.findByMemberAndPostId(member,postId);
-        postLike.updateLikeReadCheck(true);
+        postLike.getPost().updateLikeReadCheck(true);
         return "찜한글 읽음 확인";
     }
 
@@ -33,7 +33,7 @@ public class MypostService {
         Member member = validateCheck.getMember(username);
         //해당 찜한글 조회
         PostLike postLike = postLikeRepository.findByMemberAndPostId(member,postId);
-        postLike.updateLikeReadCheck(false);
+        postLike.getPost().updateLikeReadCheck(false);
         return "찜한글 읽음 취소";
     }
 }
