@@ -11,12 +11,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -41,10 +40,19 @@ public class MypostController {
     }
 
     // 찜한글 목록(최신순)
+//    @GetMapping("/mypo")
+//    public ResponseDto<Page<MyPostResponseDto>> getAllMyPosts(@AuthenticationPrincipal UserDetails userDetails,
+//                                                              @PageableDefault(page = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+//        Page<MyPostResponseDto> myPostResponseDtoList = mypostService.getAllMyPosts(userDetails.getUsername(), pageable);
+//        return ResponseDto.success(myPostResponseDtoList);
+//    }
+
+    // 찜한글 필터링(읽은글/안 읽은글)
     @GetMapping("/myposts")
-    public ResponseDto<Page<MyPostResponseDto>> getAllMyPosts(@AuthenticationPrincipal UserDetails userDetails,
-                                                              @PageableDefault(page = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
-        Page<MyPostResponseDto> myPostResponseDtoList = mypostService.getAllMyPosts(userDetails.getUsername(), pageable);
-        return ResponseDto.success(myPostResponseDtoList);
+    public ResponseDto<Page<MyPostResponseDto>> myPostFilter(@AuthenticationPrincipal UserDetails userDetails,
+                                                             @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
+                                                             @RequestParam(value = "read", required = false) Boolean read) {
+        Page<MyPostResponseDto> filteredMyPostList = mypostService.filter(userDetails.getUsername(), pageable, read);
+        return ResponseDto.success(filteredMyPostList);
     }
 }

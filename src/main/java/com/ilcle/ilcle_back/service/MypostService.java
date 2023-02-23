@@ -1,5 +1,6 @@
 package com.ilcle.ilcle_back.service;
 
+import com.fasterxml.jackson.databind.ser.FilterProvider;
 import com.ilcle.ilcle_back.dto.ResponseDto;
 import com.ilcle.ilcle_back.dto.response.MyPostResponseDto;
 import com.ilcle.ilcle_back.dto.response.PostResponseDto;
@@ -19,6 +20,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.QuerydslJpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.context.Theme;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -80,12 +82,43 @@ public class MypostService {
                                      .url(post.getUrl())
                                      .imageUrl(post.getImageUrl())
                                      .writeDate(post.getWriteDate())
+                                     .postLikeCheck(post.isPostLikeCheck())
                                      .writer(post.getWriter())
                                      .build();
             myPostsResponseDtoList.add(myPostResponseDto);
         }
         Page<MyPostResponseDto> myPostResponseDtoLists =
                 new PageImpl<>(myPostsResponseDtoList, pageable, myPostList.getTotalElements());
+
+        return myPostResponseDtoLists;
+    }
+
+    // 찜한글 필터링
+    public Page<MyPostResponseDto> filter(String username, Pageable pageable, Boolean read) {
+
+        // 사용자가 있는지 확인
+        Member member = validateCheck.getMember(username);
+        // 찜한글 목록
+        Page<Post> FilteredMyPostList = postLikeRepository.findFilterByMember(member, pageable, read);
+        List<MyPostResponseDto> myPostsResponseDtoList = new ArrayList<>();
+
+        for(Post post : FilteredMyPostList) {
+
+            MyPostResponseDto myPostResponseDto =
+                    MyPostResponseDto.builder()
+                            .id(post.getId())
+                            .title(post.getTitle())
+                            .contents(post.getContents())
+                            .url(post.getUrl())
+                            .imageUrl(post.getImageUrl())
+                            .writeDate(post.getWriteDate())
+                            .postLikeCheck(post.isPostLikeCheck())
+                            .writer(post.getWriter())
+                            .build();
+            myPostsResponseDtoList.add(myPostResponseDto);
+        }
+        Page<MyPostResponseDto> myPostResponseDtoLists =
+                new PageImpl<>(myPostsResponseDtoList, pageable, FilteredMyPostList.getTotalElements());
 
         return myPostResponseDtoLists;
     }

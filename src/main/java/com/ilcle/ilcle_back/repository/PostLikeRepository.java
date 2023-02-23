@@ -14,11 +14,13 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface PostLikeRepository extends JpaRepository<PostLike, Long> {
+public interface PostLikeRepository extends JpaRepository<PostLike, Long> , PostLikeRepositoryCustom {
 
 	Optional<PostLike> findByPostIdAndMemberUsername(Long postId, String username);
 
 	PostLike findByMemberAndPostId(Member member, Long postId);
 
 	Page<PostLike> findPostLikesByMember(Member member, Pageable pageable);
+
+
 }
