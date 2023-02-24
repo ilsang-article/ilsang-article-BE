@@ -72,7 +72,7 @@ public class RecentReadService {
 
             RecentReadResponseDto recentReadResponseDto =
                     RecentReadResponseDto.builder()
-                            .id(recent.getId())
+                            .id(post.getId())
                             .title(post.getTitle())
                             .contents(post.getContents())
                             .url(post.getUrl())

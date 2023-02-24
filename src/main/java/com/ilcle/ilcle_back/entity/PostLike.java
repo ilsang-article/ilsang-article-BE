@@ -25,10 +25,8 @@ public class PostLike {
 	@JoinColumn(name = "post_id")
 	private Post post;
 
-	@Column
-	private boolean likeReadCheck;
-
-	public void updateLikeReadCheck(boolean likeReadCheck) {
-		this.likeReadCheck = likeReadCheck;
+	public PostLike(Member member, Post post) {
+	this.member = member;
+	this.post = post;
 	}
 }
