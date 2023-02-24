@@ -2,7 +2,7 @@ name: ilcle CI/CD
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "CICD" ]
 #  pull_request:
 #    branches: [ "main" ]
 
