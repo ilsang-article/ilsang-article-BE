@@ -74,8 +74,8 @@ jobs:
     - name: Deploy
       run: |
         aws deploy create-deployment 
-        --application-name cicd 
-        --deployment-config-name CodeDeployDefault.AllAtOnce 
-        --deployment-group-name cicd-project 
-        --s3-location bucket=$S3_BUCKET_NAME,bundleType=zip,key=$PROJECT_NAME/$GITHUB_SHA.zip 
-        --region ap-northeast-2 
+        --application-name cicd \
+        --deployment-config-name CodeDeployDefault.AllAtOnce \
+        --deployment-group-name cicd-project \
+        --s3-location bucket=$S3_BUCKET_NAME,bundleType=zip,key=$PROJECT_NAME/$GITHUB_SHA.zip \
+        --region ap-northeast-2 \
