@@ -12,6 +12,13 @@ permissions:
 env:
   S3_BUCKET_NAME: ${{ secrets.S3_BUCKET_NAME }}
   PROJECT_NAME: ilcle
+    # Database
+  DB_URL: ${{ secrets.DB_URL }}
+  DB_USERNAME: ${{ secrets.DB_USERNAME }}
+  DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+  
+  # JWT Secret
+  JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
 
 jobs:
   build:
@@ -61,15 +68,14 @@ jobs:
 
     # S3에 업로드
     - name: Upload to S3
-      run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.zip s3://$S3_BUCKET_NAME/$PROJECT_NAME/$GITHUB_SHA.zip
+      run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.zip s3://$S3_BUCKET_NAME/$PROJECT_NAME/
       
     # Deploy
     - name: Deploy
       run: |
-        aws deploy create-deployment \
-        --application-name cicd \
-        --deployment-config-name CodeDeployDefault.AllAtOnce \
-        --deployment-group-name cicd-project \
-        --file-exists-behavior OVERWRITE \
-        --s3-location bucket=$S3_BUCKET_NAME,bundleType=zip,key=$PROJECT_NAME/$GITHUB_SHA.zip \
-        --region ap-northeast-2 \
+        aws deploy create-deployment 
+        --application-name cicd 
+        --deployment-config-name CodeDeployDefault.AllAtOnce 
+        --deployment-group-name cicd-project 
+        --s3-location bucket=$S3_BUCKET_NAME,bundleType=zip,key=$PROJECT_NAME/$GITHUB_SHA.zip 
+        --region ap-northeast-2 
