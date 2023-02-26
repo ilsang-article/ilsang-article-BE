@@ -25,5 +25,4 @@ public class PostController {
 			@PageableDefault(page = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
 		return ResponseDto.success(postServiece.getAllPosts(pageable));
 	}
-
 }
