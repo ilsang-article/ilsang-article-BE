@@ -2,23 +2,51 @@ package com.ilcle.ilcle_back.service;
 
 import com.ilcle.ilcle_back.dto.response.PostResponseDto;
 import com.ilcle.ilcle_back.entity.Post;
+import com.ilcle.ilcle_back.entity.PostLike;
+import com.ilcle.ilcle_back.repository.PostLikeRepository;
 import com.ilcle.ilcle_back.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Slf4j
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class PostService {
 
+	private final PostLikeRepository postLikeRepository;
 	private final PostRepository postRepository;
-	public Page<PostResponseDto> getAllPosts(Pageable pageable) {
-		return postRepository.getAllPosts(pageable);
+
+	public Page<PostResponseDto> getAllPosts(Pageable pageable, String username) {
+
+		Page<Post> posts = postRepository.getAllPosts(pageable);
+
+		List<PostResponseDto> postList = new ArrayList<>();
+		for(Post post : posts) {
+			Optional<PostLike> postLike = postLikeRepository.findByPostIdAndMemberUsername(post.getId(), username);
+			boolean postLikeCheck = postLike.isPresent();
+
+			PostResponseDto postResponseDto =
+					PostResponseDto.builder()
+							.id(post.getId())
+							.title(post.getTitle())
+							.contents(post.getContents())
+							.url(post.getUrl())
+							.imageUrl(post.getImageUrl())
+							.writeDate(post.getWriteDate())
+							.writer(post.getWriter())
+							.likeCheck(postLikeCheck)
+							.build();
+			postList.add(postResponseDto);
+		}
+		return new PageImpl<>(postList,pageable,posts.getTotalElements());
 
 	}
 }

@@ -1,11 +1,9 @@
 package com.ilcle.ilcle_back.repository;
 
-import com.ilcle.ilcle_back.dto.response.PostResponseDto;
 import com.ilcle.ilcle_back.entity.Member;
 import com.ilcle.ilcle_back.entity.Post;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
-import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -26,17 +24,9 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
 
 	// 전체글 조회(최신순)
 	@Override
-	public Page<PostResponseDto> getAllPosts(Pageable pageable) {
-		List<PostResponseDto> result = jpaQueryFactory.from(post)
-				.select(Projections.constructor(PostResponseDto.class,
-						post.id,
-						post.title,
-						post.contents,
-						post.url,
-						post.imageUrl,
-						post.writeDate,
-						post.writer
-				))
+	public Page<Post> getAllPosts(Pageable pageable) {
+		List<Post> result = jpaQueryFactory
+				.selectFrom(post)
 				.limit(pageable.getPageSize())
 				.offset(pageable.getOffset())
 				.orderBy(post.writeDate.desc())

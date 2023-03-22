@@ -18,5 +18,6 @@ public class PostResponseDto {
 	private String imageUrl;
 	private String writeDate;
 	private String writer;
+	private boolean likeCheck;
 
 }
