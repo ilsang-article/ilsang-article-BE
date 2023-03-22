@@ -10,6 +10,9 @@ import com.ilcle.ilcle_back.repository.PostRepository;
 import com.ilcle.ilcle_back.repository.RecentReadRepository;
 import com.ilcle.ilcle_back.utils.ValidateCheck;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -54,14 +57,14 @@ public class RecentReadService {
 
     //최근 읽은 글 조회
     @Transactional
-    public List<RecentReadResponseDto> getRecentRead(String username) {
+    public Page<RecentReadResponseDto> getRecentRead(String username, Pageable pageable) {
         //사용자가 있는지 확인
         Member member = validateCheck.getMember(username);
 
         //3일 지난 글은 삭제
         deleteRecentRead(member);
 
-        List<RecentRead> recentReadList = recentReadRepository.findAllByMember(member);
+        Page<RecentRead> recentReadList = recentReadRepository.findAllByMember(member, pageable);
         List<RecentReadResponseDto> recentReadResponseDtoList = new ArrayList<>();
         for (RecentRead recent : recentReadList) {
             Post post = postRepository.findById(recent.getPost().getId())
@@ -82,7 +85,7 @@ public class RecentReadService {
                             .build();
             recentReadResponseDtoList.add(recentReadResponseDto);
         }
-        return recentReadResponseDtoList;
+        return new PageImpl<>(recentReadResponseDtoList,pageable,recentReadList.getTotalElements());
     }
 
     //최근 읽은 글 조회시 3일 지난 글은 삭제
