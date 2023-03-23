@@ -12,6 +12,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "포스트 컨트롤러")
@@ -21,15 +22,17 @@ public class PostController {
 
 	private final PostService postService;
 
-	// 전체글 조회(최신순)
+	// 전체글 조회(최신순), 검색
 	@GetMapping("/posts")
-	public ResponseDto<Page<PostResponseDto>> getAllPosts(
-			@PageableDefault(page = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+	public ResponseDto<Page<PostResponseDto>> getPosts(
+			@PageableDefault(page = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
+			@RequestParam(value = "search", required = false) String search) {
 
-//		//가입회원 비가입회원 구분
+		//가입회원 비가입회원 구분
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String username = authentication.getName();
 
-		return ResponseDto.success(postService.getAllPosts(pageable,username));
+		return ResponseDto.success(postService.getPosts(pageable,search,username));
 	}
+
 }
