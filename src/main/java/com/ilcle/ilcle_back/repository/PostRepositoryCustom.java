@@ -7,10 +7,10 @@ import org.springframework.data.domain.Pageable;
 
 public interface PostRepositoryCustom {
 
-	// 전체글 조회(최신순)
-	Page<Post> getAllPosts(Pageable pageable);
+	// 전체글 조회(최신순), 검색
+	Page<Post> getAllPosts(Pageable pageable, String search);
 
+	// 찜한글 조회
 	Page<Post> findFilterByMember(Member member, Pageable pageable, Boolean read);
-
 
 }

@@ -24,9 +24,9 @@ public class PostService {
 	private final PostLikeRepository postLikeRepository;
 	private final PostRepository postRepository;
 
-	public Page<PostResponseDto> getAllPosts(Pageable pageable, String username) {
+	public Page<PostResponseDto> getPosts(Pageable pageable,String search, String username) {
 
-		Page<Post> posts = postRepository.getAllPosts(pageable);
+		Page<Post> posts = postRepository.getAllPosts(pageable,search);
 
 		List<PostResponseDto> postList = new ArrayList<>();
 		for(Post post : posts) {

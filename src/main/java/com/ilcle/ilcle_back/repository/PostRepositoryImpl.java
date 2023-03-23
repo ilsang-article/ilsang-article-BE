@@ -22,21 +22,23 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
 
 	private final JPAQueryFactory jpaQueryFactory;
 
-	// 전체글 조회(최신순)
+	// 전체글 조회(최신순), 검섹
 	@Override
-	public Page<Post> getAllPosts(Pageable pageable) {
+	public Page<Post> getAllPosts(Pageable pageable, String search) {
 		List<Post> result = jpaQueryFactory
 				.selectFrom(post)
+				.where(eqSearch(search))
 				.limit(pageable.getPageSize())
 				.offset(pageable.getOffset())
 				.orderBy(post.writeDate.desc())
 				.fetch();
 
-			long totalSize = jpaQueryFactory
-					.selectFrom(post)
-					.fetch().size();
+		long totalSize = jpaQueryFactory
+				.selectFrom(post)
+				.fetch().size();
 
-		return new PageImpl<>(result, pageable, totalSize);	}
+		return new PageImpl<>(result, pageable, totalSize);
+	}
 
 	// 찜한글 조회(기본: 최신순, 필터링: 읽은순/안 읽은순)
 	public Page<Post> findFilterByMember(Member member, Pageable pageable, Boolean read) {
@@ -65,6 +67,10 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
 		return new PageImpl<>(result, pageable, totalSize);
 	}
 
+	private BooleanExpression eqSearch(String search) {
+		return search != null ? post.title.contains(search).or(post.contents.contains(search)) : null;
+	}
+
 	private BooleanExpression eqRead(Boolean read) {
 		if (read == null) {
 			return null;
@@ -72,14 +78,15 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
 		return post.likeReadCheck.eq(read);
 	}
 
+
 	//정렬하기
 	private OrderSpecifier<?> sort(Pageable pageable) {
 		if (!pageable.getSort().isEmpty()) {
 			for (Sort.Order order : pageable.getSort()) {
 				if (order.getProperty().equals("read")) {
 					return new OrderSpecifier<>(Order.DESC, post.likeReadCheck);
-				}else{
-						return new OrderSpecifier<>(Order.ASC, post.likeReadCheck);
+				} else {
+					return new OrderSpecifier<>(Order.ASC, post.likeReadCheck);
 				}
 			}
 		}
