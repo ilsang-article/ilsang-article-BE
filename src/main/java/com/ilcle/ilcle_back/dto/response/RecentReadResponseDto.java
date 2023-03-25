@@ -17,4 +17,5 @@ public class RecentReadResponseDto {
     private String imageUrl;
     private String writeDate;
     private String writer;
+    private boolean likeCheck;
 }

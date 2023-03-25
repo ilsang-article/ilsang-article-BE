@@ -23,7 +23,7 @@ public class Post extends BaseTimeEntity {
 	@Column
 	private String contents;
 
-	@Column
+	@Column(unique = true)
 	private String url;
 
 	@Column

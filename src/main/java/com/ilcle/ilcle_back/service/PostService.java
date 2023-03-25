@@ -24,6 +24,7 @@ public class PostService {
 	private final PostLikeRepository postLikeRepository;
 	private final PostRepository postRepository;
 
+	//전체 글 조회, 검색
 	public Page<PostResponseDto> getPosts(Pageable pageable,String search, String username) {
 
 		Page<Post> posts = postRepository.getAllPosts(pageable,search);

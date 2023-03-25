@@ -3,9 +3,11 @@ package com.ilcle.ilcle_back.service;
 import com.ilcle.ilcle_back.dto.response.RecentReadResponseDto;
 import com.ilcle.ilcle_back.entity.Member;
 import com.ilcle.ilcle_back.entity.Post;
+import com.ilcle.ilcle_back.entity.PostLike;
 import com.ilcle.ilcle_back.entity.RecentRead;
 import com.ilcle.ilcle_back.exception.ErrorCode;
 import com.ilcle.ilcle_back.exception.GlobalException;
+import com.ilcle.ilcle_back.repository.PostLikeRepository;
 import com.ilcle.ilcle_back.repository.PostRepository;
 import com.ilcle.ilcle_back.repository.RecentReadRepository;
 import com.ilcle.ilcle_back.utils.ValidateCheck;
@@ -30,6 +32,7 @@ public class RecentReadService {
     private final RecentReadRepository recentReadRepository;
 
     private final PostRepository postRepository;
+    private final PostLikeRepository postLikeRepository;
 
     //글 클릭시 읽은 글로 저장
     @Transactional
@@ -71,7 +74,9 @@ public class RecentReadService {
                     .orElseThrow(
                             () -> new GlobalException(ErrorCode.POST_NOT_FOUND)
                     );
-
+            boolean likeCheck = false;
+            Optional<PostLike> like = postLikeRepository.findByPostIdAndMemberUsername(post.getId(), username);
+            if (like.isPresent()) likeCheck = true;
 
             RecentReadResponseDto recentReadResponseDto =
                     RecentReadResponseDto.builder()
@@ -82,16 +87,17 @@ public class RecentReadService {
                             .imageUrl(post.getImageUrl())
                             .writeDate(post.getWriteDate())
                             .writer(post.getWriter())
+                            .likeCheck(likeCheck)
                             .build();
             recentReadResponseDtoList.add(recentReadResponseDto);
         }
-        return new PageImpl<>(recentReadResponseDtoList,pageable,recentReadList.getTotalElements());
+        return new PageImpl<>(recentReadResponseDtoList, pageable, recentReadList.getTotalElements());
     }
 
     //최근 읽은 글 조회시 3일 지난 글은 삭제
     private void deleteRecentRead(Member member) {
         List<RecentRead> recentRead = recentReadRepository.findAllByMember(member);
-        for(RecentRead recent:recentRead) {
+        for (RecentRead recent : recentRead) {
             if (recent.getReadCheckTime().isBefore(LocalDateTime.now().minusHours(72)))
                 recentReadRepository.delete(recent);
         }
