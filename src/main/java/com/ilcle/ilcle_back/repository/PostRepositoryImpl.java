@@ -22,7 +22,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
 
 	private final JPAQueryFactory jpaQueryFactory;
 
-	// 전체글 조회(최신순), 검섹
+	// 전체글 조회(최신순), 검색
 	@Override
 	public Page<Post> getAllPosts(Pageable pageable, String search) {
 		List<Post> result = jpaQueryFactory
@@ -35,6 +35,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
 
 		long totalSize = jpaQueryFactory
 				.selectFrom(post)
+				.where(eqSearch(search))
 				.fetch().size();
 
 		return new PageImpl<>(result, pageable, totalSize);
