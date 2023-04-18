@@ -19,18 +19,11 @@ import org.springframework.web.bind.annotation.*;
 public class MypostController {
     private final MypostService mypostService;
 
-    //찜한글 클릭시 자동 읽음 체크
-    @PutMapping("/myposts/{postId}/read")
-    public ResponseDto<?> saveLikeReadCheck(@AuthenticationPrincipal UserDetails userDetails,
-                                                                          @PathVariable Long postId) {
-        return ResponseDto.success(mypostService.saveLikeReadCheck(userDetails.getUsername(), postId));
-    }
-
-    //찜한글 읽음 표시 수동 삭제
-    @PutMapping("/myposts/{postId}/unread")
-    public ResponseDto<?> deleteLikeReadCheck(@AuthenticationPrincipal UserDetails userDetails,
+    //읽은 글에서 삭제
+    @DeleteMapping("/myposts/{postId}/unread")
+    public ResponseDto<?> deletePostRead(@AuthenticationPrincipal UserDetails userDetails,
                                               @PathVariable Long postId) {
-        return ResponseDto.success(mypostService.deleteLikeReadCheck(userDetails.getUsername(), postId));
+        return ResponseDto.success(mypostService.deletePostRead(userDetails.getUsername(), postId));
     }
 
     // 찜한글 필터링(읽은글/안 읽은글)

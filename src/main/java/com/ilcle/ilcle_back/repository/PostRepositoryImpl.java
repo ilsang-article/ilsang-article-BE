@@ -12,85 +12,111 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.ilcle.ilcle_back.entity.QPost.post;
 import static com.ilcle.ilcle_back.entity.QPostLike.postLike;
+import static com.ilcle.ilcle_back.entity.QPostRead.postRead;
 
 @RequiredArgsConstructor
 public class PostRepositoryImpl implements PostRepositoryCustom {
 
-	private final JPAQueryFactory jpaQueryFactory;
+    private final JPAQueryFactory jpaQueryFactory;
 
-	// 전체글 조회(최신순), 검색
-	@Override
-	public Page<Post> getAllPosts(Pageable pageable, String search) {
-		List<Post> result = jpaQueryFactory
-				.selectFrom(post)
-				.where(eqSearch(search))
-				.limit(pageable.getPageSize())
-				.offset(pageable.getOffset())
-				.orderBy(post.writeDate.desc())
-				.fetch();
+    // 전체글 조회(최신순), 검색
+    @Override
+    public Page<Post> getAllPosts(Pageable pageable, String search) {
+        List<Post> result = jpaQueryFactory
+                .selectFrom(post)
+                .where(eqSearch(search))
+                .limit(pageable.getPageSize())
+                .offset(pageable.getOffset())
+                .orderBy(post.writeDate.desc())
+                .fetch();
 
-		long totalSize = jpaQueryFactory
-				.selectFrom(post)
-				.where(eqSearch(search))
-				.fetch().size();
+        long totalSize = jpaQueryFactory
+                .selectFrom(post)
+                .where(eqSearch(search))
+                .fetch().size();
 
-		return new PageImpl<>(result, pageable, totalSize);
-	}
+        return new PageImpl<>(result, pageable, totalSize);
+    }
 
-	// 찜한글 조회(기본: 최신순, 필터링: 읽은순/안 읽은순)
-	public Page<Post> findFilterByMember(Member member, Pageable pageable, Boolean read) {
+    // 찜한글 조회(기본: 최신순, 필터링: 읽은순/안 읽은순)
+    public Page<Post> findFilterByMember(Member member, Pageable pageable, Boolean read) {
 
-		List<Post> result = jpaQueryFactory
-				.select(post)
-				.from(postLike)
-				.where(
-						postLike.member.id.eq(member.getId()),
-						eqRead(read)
-				)
-				.limit(pageable.getPageSize())
-				.offset(pageable.getOffset())
-				.orderBy(sort(pageable), post.writeDate.desc())
+        List<Post> result = jpaQueryFactory
+                .select(post)
+                .from(postLike)
+                .where(
+                        postLike.member.id.eq(member.getId()),
+                        eqRead(read)
+                )
+                .limit(pageable.getPageSize())
+                .offset(pageable.getOffset())
+                .orderBy(sort(pageable), post.writeDate.desc())
 //				.orderBy(post.writeDate.desc())
-				.fetch();
+                .fetch();
 
-		long totalSize = jpaQueryFactory
-				.select(post)
-				.from(postLike)
-				.where(
-						postLike.member.id.eq(member.getId()),
-						eqRead(read))
-				.fetch().size();
+        long totalSize = jpaQueryFactory
+                .select(post)
+                .from(postLike)
+                .where(
+                        postLike.member.id.eq(member.getId()),
+                        eqRead(read))
+                .fetch().size();
 
-		return new PageImpl<>(result, pageable, totalSize);
-	}
+        return new PageImpl<>(result, pageable, totalSize);
+    }
 
-	private BooleanExpression eqSearch(String search) {
-		return search != null ? post.title.contains(search).or(post.contents.contains(search)) : null;
-	}
+    private BooleanExpression eqSearch(String search) {
+        return search != null ? post.title.contains(search).or(post.contents.contains(search)) : null;
+    }
 
-	private BooleanExpression eqRead(Boolean read) {
-		if (read == null) {
-			return null;
-		}
-		return post.likeReadCheck.eq(read);
-	}
+    private BooleanExpression eqRead(Boolean read) {
+        if (read == null) {
+            return null;
+        }
+        return post.likeReadCheck.eq(read);
+    }
 
 
-	//정렬하기
-	private OrderSpecifier<?> sort(Pageable pageable) {
-		if (!pageable.getSort().isEmpty()) {
-			for (Sort.Order order : pageable.getSort()) {
-				if (order.getProperty().equals("read")) {
-					return new OrderSpecifier<>(Order.DESC, post.likeReadCheck);
-				} else {
-					return new OrderSpecifier<>(Order.ASC, post.likeReadCheck);
-				}
-			}
-		}
-		return new OrderSpecifier<>(Order.DESC, post.writeDate);
-	}
+    //정렬하기
+    private OrderSpecifier<?> sort(Pageable pageable) {
+        if (!pageable.getSort().isEmpty()) {
+            for (Sort.Order order : pageable.getSort()) {
+                if (order.getProperty().equals("read")) {
+                    return new OrderSpecifier<>(Order.DESC, post.likeReadCheck);
+                } else {
+                    return new OrderSpecifier<>(Order.ASC, post.likeReadCheck);
+                }
+            }
+        }
+        return new OrderSpecifier<>(Order.DESC, post.writeDate);
+    }
+
+
+    // 최근 읽은 글 조회
+    @Override
+    public Page<Post> getRecentReadPosts(Member member, Pageable pageable) {
+        List<Post> result = jpaQueryFactory
+                .select(post)
+                .from(postRead)
+                .where(postRead.member.id.eq(member.getId()),
+                        postRead.readCheckTime.gt(LocalDateTime.now().minusHours(72)))
+                .limit(pageable.getPageSize())
+                .offset(pageable.getOffset())
+                .orderBy(postRead.readCheckTime.desc())
+                .fetch();
+
+        long totalSize = jpaQueryFactory
+                .select(post)
+                .from(postRead)
+                .where(postRead.member.id.eq(member.getId()),
+                        postRead.readCheckTime.gt(LocalDateTime.now().minusHours(72)))
+                .fetch().size();
+
+        return new PageImpl<>(result, pageable, totalSize);
+    }
 }

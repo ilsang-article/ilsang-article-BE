@@ -13,4 +13,6 @@ public interface PostRepositoryCustom {
 	// 찜한글 조회
 	Page<Post> findFilterByMember(Member member, Pageable pageable, Boolean read);
 
+	// 최근 읽은 글 조회
+	Page<Post> getRecentReadPosts(Member member, Pageable pageable);
 }

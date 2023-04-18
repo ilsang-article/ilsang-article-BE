@@ -19,7 +19,7 @@ public class MyPostResponseDto {
 	private String writeDate;
 	private String writer;
 	private boolean likeCheck;
-	private boolean likeReadCheck;
+	private boolean readCheck;
 
 
 }
