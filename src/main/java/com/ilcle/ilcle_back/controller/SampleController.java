@@ -18,7 +18,7 @@ public class SampleController {
     public String getTest1(
             @Parameter(name = "id", description = "아이디값", example = "예시")
             @PathVariable String id,
-            @RequestParam(value = "q", defaultValue = "default", required = false) String queryParam
+            @RequestParam(value = "read", defaultValue = "true", required = false) String queryParam
     ) {
 
         return id + queryParam;
