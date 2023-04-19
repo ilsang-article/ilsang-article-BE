@@ -20,41 +20,38 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class PostLikeService {
 
-	private final PostLikeRepository postLikeRepository;
-	private final PostRepository postRepository;
-	private final ValidateCheck validateCheck;
+    private final PostLikeRepository postLikeRepository;
+    private final PostRepository postRepository;
+    private final ValidateCheck validateCheck;
 
-	// 게시글 찜하기
-	@Transactional
-	public ResponseDto<PostLikeResponseDto> postLikeUp(Long postId, String username){
+    // 게시글 찜하기
+    @Transactional
+    public ResponseDto<PostLikeResponseDto> postLikeUp(Long postId, String username) {
+        Member member = validateCheck.getMember(username);
 
-		// 게시글 찜하기
-		Optional<PostLike> likes = postLikeRepository
-				.findByPostIdAndMemberUsername(postId, username);
+        Post post = postRepository.findById(postId).orElseThrow(
+                () -> new GlobalException(ErrorCode.POST_NOT_FOUND)
+        );
 
-		Member member = validateCheck.getMember(username);
-		Post post = new Post(postId);
+        // 게시글 찜하기
+        Optional<PostLike> likes = postLikeRepository
+                .findByPostIdAndMemberUsername(postId, username);
 
-		Post updatePost = postRepository.findById(post.getId()).orElseThrow(
-				() -> new GlobalException(ErrorCode.POST_NOT_FOUND)
-		);
+        boolean likeCheck = false;
+         // 이미 찜한 글인 경우
+        if (likes.isPresent()) {
+            postLikeRepository.deleteById(likes.get().getId());
+        // 찜했던 글이 아닌 경우
+        } else {
+            PostLike postLike = new PostLike(member, post);
+            postLikeRepository.save(postLike);
+            likeCheck = true;
+        }
 
-		boolean likeCheck;
-		if (likes.isPresent()) {
-			likeCheck = false;
-			postLikeRepository.delete(likes.get());
-			updatePost.updateLikeCheck(false);
-		} else {
-			likeCheck = true;
-			PostLike postLike = new PostLike(member, post);
-			postLikeRepository.save(postLike);
-			updatePost.updateLikeCheck(true);
-		}
-
-		return ResponseDto.success(
-				PostLikeResponseDto.builder()
-						.likeCheck(likeCheck)
-						.build()
-		);
-	}
+        return ResponseDto.success(
+                PostLikeResponseDto.builder()
+                        .likeCheck(likeCheck)
+                        .build()
+        );
+    }
 }

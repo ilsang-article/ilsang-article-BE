@@ -61,7 +61,7 @@ public class PostReadService {
         //사용자가 있는지 확인
         Member member = validateCheck.getMember(username);
 
-        Page<Post> recentReadList = postRepository.getRecentReadPosts(member, pageable);
+        Page<Post> recentReadList = postRepository.getRecentReadPosts(member.getId(), pageable);
         List<PostResponseDto> recentReadResponseDtoList = new ArrayList<>();
         for (Post post : recentReadList) {
             boolean likeCheck = false;

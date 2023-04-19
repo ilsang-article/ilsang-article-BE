@@ -49,30 +49,36 @@ public class MypostService {
         // 사용자가 있는지 확인
         Member member = validateCheck.getMember(username);
         // 찜한글 목록
-        Page<Post> FilteredMyPostList = postRepository.findFilterByMember(member, pageable, read);
+        Page<Post> FilteredMyPostList = postRepository.findFilterByMember(member.getId(), pageable, read);
         List<MyPostResponseDto> myPostsResponseDtoList = new ArrayList<>();
 
         for(Post post : FilteredMyPostList) {
-            boolean readCheck = false;
-            Optional<PostRead> postRead = postReadRepository.findByMemberUsernameAndPostId(username,post.getId());
-            if (postRead.isPresent()) readCheck = true;
-            MyPostResponseDto myPostResponseDto =
-                    MyPostResponseDto.builder()
-                            .id(post.getId())
-                            .title(post.getTitle())
-                            .contents(post.getContents())
-                            .url(post.getUrl())
-                            .imageUrl(post.getImageUrl())
-                            .writeDate(post.getWriteDate())
-                            .likeCheck(post.isLikeCheck())
-                            .readCheck(readCheck)
-                            .writer(post.getWriter())
-                            .build();
-            myPostsResponseDtoList.add(myPostResponseDto);
-        }
-        Page<MyPostResponseDto> myPostResponseDtoLists =
-                new PageImpl<>(myPostsResponseDtoList, pageable, FilteredMyPostList.getTotalElements());
 
-        return myPostResponseDtoLists;
-    }
+            // 읽었는지 체크
+            Optional<PostRead> postRead = postReadRepository.findByMemberUsernameAndPostId(username, post.getId());
+            boolean readCheck = false;
+            if (postRead.isPresent())
+                readCheck = true;
+                // 찜했는지 체크
+                boolean likeCheck = false;
+                Optional<PostLike> postLike = postLikeRepository.findByPostIdAndMemberUsername(post.getId(), username);
+                if (postLike.isPresent()) likeCheck = true;
+
+                MyPostResponseDto myPostResponseDto =
+                        MyPostResponseDto.builder()
+                                .id(post.getId())
+                                .title(post.getTitle())
+                                .contents(post.getContents())
+                                .url(post.getUrl())
+                                .imageUrl(post.getImageUrl())
+                                .writeDate(post.getWriteDate())
+                                .likeCheck(likeCheck)
+                                .readCheck(readCheck)
+                                .writer(post.getWriter())
+                                .build();
+                myPostsResponseDtoList.add(myPostResponseDto);
+            }
+
+            return new PageImpl<>(myPostsResponseDtoList, pageable, FilteredMyPostList.getTotalElements());
+        }
 }

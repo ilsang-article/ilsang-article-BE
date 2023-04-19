@@ -1,6 +1,7 @@
 package com.ilcle.ilcle_back.repository;
 
 import com.ilcle.ilcle_back.entity.PostRead;
+import com.querydsl.core.types.dsl.NumberPath;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
