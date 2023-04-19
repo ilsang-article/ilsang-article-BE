@@ -61,12 +61,8 @@ public class MemberService {
     @Transactional
     public ResponseEntity<ResponseDto<LoginResponseDto>> login(LoginRequestDto loginReqDto, HttpServletResponse response) {
 
-        Member member = validateCheck.isPresentMember(loginReqDto.getUsername());
+        Member member = validateCheck.getMember(loginReqDto.getUsername());
 
-        //사용자가 있는지 확인
-        if(null == member){
-            throw new GlobalException(ErrorCode.MEMBER_NOT_FOUND);
-        }
         //비밀번호가 맞는지 확인
         if(!member.validatePassword(passwordEncoder, loginReqDto.getPassword())){
             throw new GlobalException(ErrorCode.BAD_PASSWORD);

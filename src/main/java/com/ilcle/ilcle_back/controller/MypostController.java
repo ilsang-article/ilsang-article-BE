@@ -22,8 +22,8 @@ public class MypostController {
     //읽은 글에서 삭제
     @DeleteMapping("/myposts/{postId}/unread")
     public ResponseDto<?> deletePostRead(@AuthenticationPrincipal UserDetails userDetails,
-                                              @PathVariable Long postId) {
-        return ResponseDto.success(mypostService.deletePostRead(userDetails.getUsername(), postId));
+                                         @PathVariable Long postId) {
+        return ResponseDto.success(mypostService.deletePostRead(userDetails.getUsername(),postId));
     }
 
     // 찜한글 필터링(읽은글/안 읽은글)
