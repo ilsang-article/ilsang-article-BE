@@ -52,6 +52,10 @@ dependencies {
 	//s3
 	implementation 'io.awspring.cloud:spring-cloud-starter-aws:2.4.2'
 
+	implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.7.1'
+
+	//json
+	implementation group: 'org.json', name: 'json', version: '20230227'
 }
 
 tasks.named('test') {

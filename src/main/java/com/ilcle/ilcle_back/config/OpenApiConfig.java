@@ -1,7 +1,6 @@
 package com.ilcle.ilcle_back.config;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
-import io.swagger.v3.oas.annotations.info.Contact;
 import io.swagger.v3.oas.annotations.info.Info;
 import org.springframework.context.annotation.Configuration;
 
@@ -9,11 +8,7 @@ import org.springframework.context.annotation.Configuration;
         info = @Info(
                 title = "ilcle API",
                 description = "일상의 아티클 API 명세서",
-                version = "v1",
-                contact = @Contact(
-                        name = "beginners",
-                        email = "sample@email.co.kr"
-                )
+                version = "v1"
         )
 )
 //todo: SecuritySchemes

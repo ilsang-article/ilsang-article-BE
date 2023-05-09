@@ -1,14 +1,11 @@
 package com.ilcle.ilcle_back.security.jwt;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -27,14 +24,14 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         String refreshToken = jwtUtil.getHeaderToken(request, "Refresh");
 
         if(accessToken != null) {
-            if(!jwtUtil.tokenValidation(accessToken)){
-                jwtExceptionHandler(response, "AccessToken Expired", HttpStatus.UNAUTHORIZED);
+            if(!jwtUtil.tokenValidation(accessToken, request)){
+//                jwtExceptionHandler(response, "AccessToken Expired", HttpStatus.UNAUTHORIZED);
                 return;
             }
             setAuthentication(jwtUtil.getUsernameFromToken(accessToken));
         }else if(refreshToken != null) {
-            if(!jwtUtil.refreshTokenValidation(refreshToken)){
-                jwtExceptionHandler(response, "RefreshToken Expired", HttpStatus.BAD_REQUEST);
+            if(!jwtUtil.refreshTokenValidation(refreshToken,request)){
+//                jwtExceptionHandler(response, "RefreshToken Expired", HttpStatus.BAD_REQUEST);
                 return;
             }
             setAuthentication(jwtUtil.getUsernameFromToken(refreshToken));
@@ -48,14 +45,15 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
-    public void jwtExceptionHandler(HttpServletResponse response, String msg, HttpStatus status) {
-        response.setStatus(status.value());
-        response.setContentType("application/json");
-        try {
-            String json = new ObjectMapper().writeValueAsString(ResponseEntity.status(HttpStatus.UNAUTHORIZED));
-            response.getWriter().write(json);
-        } catch (Exception e) {
-            log.error(e.getMessage());
-        }
-    }
+//    public void jwtExceptionHandler(HttpServletResponse response, String msg, HttpStatus status) {
+//        response.setStatus(status.value());
+//        response.setContentType("application/json");
+//        try {
+//            ResponseEntity<String> entity = ResponseEntity.status(status).body(msg);
+//            String json = new ObjectMapper().writeValueAsString(entity);
+//            response.getWriter().write(json);
+//        } catch (Exception e) {
+//            log.error(e.getMessage());
+//        }
+//    }
 }

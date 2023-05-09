@@ -11,6 +11,8 @@ public interface PostRepositoryCustom {
 	Page<Post> getAllPosts(Pageable pageable, String search);
 
 	// 찜한글 조회
-	Page<Post> findFilterByMember(Member member, Pageable pageable, Boolean read);
+	Page<Post> findFilterByMember(Long memberId, Pageable pageable, Boolean read);
 
+	// 최근 읽은 글 조회
+	Page<Post> getRecentReadPosts(Long memberId, Pageable pageable);
 }

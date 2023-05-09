@@ -14,7 +14,7 @@ import static jakarta.persistence.FetchType.LAZY;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class RecentRead extends BaseTimeEntity {
+public class PostRead extends BaseTimeEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,7 +31,7 @@ public class RecentRead extends BaseTimeEntity {
 	@Column
 	private LocalDateTime readCheckTime;
 
-	public RecentRead(Member member, Post post) {
+	public PostRead(Member member, Post post) {
 		this.member = member;
 		this.post = post;
 		this.readCheckTime = LocalDateTime.now();
