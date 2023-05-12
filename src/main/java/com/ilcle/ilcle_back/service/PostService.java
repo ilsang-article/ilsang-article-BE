@@ -44,6 +44,7 @@ public class PostService {
 							.writeDate(post.getWriteDate())
 							.writer(post.getWriter())
 							.likeCheck(postLikeCheck)
+							.test("test")
 							.build();
 			postList.add(postResponseDto);
 		}

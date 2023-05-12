@@ -19,5 +19,6 @@ public class PostResponseDto {
 	private String writeDate;
 	private String writer;
 	private boolean likeCheck;
+	private String test;
 
 }
