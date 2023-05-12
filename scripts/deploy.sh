@@ -23,6 +23,6 @@ else
 fi
 
 DEPLOY_JAR=$DEPLOY_PATH$JAR_NAME
-source ~/.bashrc
+source ~/.bash_profile
 echo "> DEPLOY_JAR 배포"    >> $DEPLOY_PATH/deploy.log
-sudo nohup java -jar $DEPLOY_JAR >> $DEPLOY_PATH/nohup.out 2>&1 &
+sudo nohup /opt/jdk-17/bin/java -jar $DEPLOY_JAR --spring.profiles.active=prod \ > $DEPLOY_PATH/nohup.out 2>&1 &
