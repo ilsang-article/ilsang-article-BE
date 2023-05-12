@@ -52,4 +52,5 @@ public class SampleController {
     public String getTest2(@PathVariable String pp) {
         return pp;
     }
+
 }
