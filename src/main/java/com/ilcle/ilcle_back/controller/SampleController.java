@@ -48,4 +48,8 @@ public class SampleController {
         return "hi";
     }
 
+    @GetMapping("/get/{pp}")
+    public String getTest2(@PathVariable String pp) {
+        return pp;
+    }
 }
