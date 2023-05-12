@@ -54,7 +54,7 @@ jobs:
 
       # S3에 업로드
       - name: Upload to S3
-        run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.zip s3://$S3_BUCKET_NAME/$PROJECT_NAME/$GITHUB_SHA.zip
+        run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.zip s3://$S3_BUCKET_NAME/$PROJECT_NAME.zip
 
       # CodeDeploy에게 배포 명령을 내린다.
       - name: Code Deploy
@@ -62,4 +62,4 @@ jobs:
            aws deploy create-deployment --application-name cicd
            --deployment-config-name CodeDeployDefault.AllAtOnce
            --deployment-group-name cicd-project
-           --s3-location bucket=$S3_BUCKET_NAME,bundleType=zip,key=$GITHUB_SHA.zip
+           --s3-location bucket=$S3_BUCKET_NAME,bundleType=zip,key=$PROJECT_NAME.zip
