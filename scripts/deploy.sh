@@ -24,5 +24,5 @@ fi
 
 DEPLOY_JAR=$DEPLOY_PATH$JAR_NAME
 source ~/.bashrc
-echo "> DEPLOY_JAR 배포"    >> /home/ubuntu/action/deploy.log
-sudo nohup java -jar $DEPLOY_JAR >> /home/ubuntu/action/nohup.out 2>&1 &
+echo "> DEPLOY_JAR 배포"    >> $DEPLOY_PATH/deploy.log
+sudo nohup java -jar $DEPLOY_JAR >> $DEPLOY_PATH/nohup.out 2>&1 &
