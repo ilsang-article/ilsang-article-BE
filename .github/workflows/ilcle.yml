@@ -9,9 +9,9 @@ name: ilcle CI/CD
 # branch 단위 외에도, tag나 cron 식 등을 사용할 수 있음
 on:
   push:
-    branches: [ CICD2 ]
+    branches: [ release ]
   pull_request:
-    branches: [ CICD2 ]
+    branches: [ release ]
 
 env:
   S3_BUCKET_NAME: ${{ secrets.S3_BUCKET_NAME }}
