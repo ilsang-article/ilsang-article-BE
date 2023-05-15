@@ -47,5 +47,4 @@ public class SampleController {
     public String deleteTest4() {
         return "hi";
     }
-
 }

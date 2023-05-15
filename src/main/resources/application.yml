@@ -34,24 +34,24 @@ server:
       enabled: true
       force: true
 
-#cloud:
-#  aws:
-#    s3:
-#      bucket: ${S3_BUCKET_NAME}
-#    credentials:
-#      access-key: ${AWS_ACCESS_KEY_ID}
-#      secret-key: ${AWS_SECRET_ACCESS_KEY}
-#    region:
-#      static: ${S3_REGION}
-#      auto: false
-#    stack:
-#      auto: false
-#logging:
-#  level:
-#    com:
-#      amazonaws:
-#        util:
-#          EC2MetadataUtils: ERROR
+cloud:
+  aws:
+    s3:
+      bucket: ${S3_BUCKET_NAME}
+    credentials:
+      access-key: ${AWS_ACCESS_KEY_ID}
+      secret-key: ${AWS_SECRET_ACCESS_KEY}
+    region:
+      static: ${S3_REGION}
+      auto: false
+    stack:
+      auto: false
+logging:
+  level:
+    com:
+      amazonaws:
+        util:
+          EC2MetadataUtils: ERROR
 
 jwt:
   secret:
