@@ -47,9 +47,4 @@ public class SampleController {
     public String deleteTest4() {
         return "hi";
     }
-
-    @GetMapping("/get1/{id}")
-    public String getTest2(@PathVariable String id) {
-        return id;
-    }
 }
